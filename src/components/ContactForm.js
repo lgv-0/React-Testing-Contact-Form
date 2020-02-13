@@ -3,12 +3,22 @@ import { useForm } from "react-hook-form";
 
 const ContactForm = () => {
   const [data, setData] = useState();
+  const [stuff, sStuff] = useState("");
   const { register, errors, handleSubmit, reset } = useForm({
     mode: "onBlur"
   });
   const onSubmit = data => {
     setData(data);
   };
+  const onlabelchange = data => {
+    let m = data.target.value;
+    if (m[0] == null)
+    {
+      sStuff('');
+      return;
+    }
+    sStuff(m.replace(m[0], m[0].toUpperCase()));
+  }
 
   return (
     <div className="App">
@@ -19,6 +29,9 @@ const ContactForm = () => {
             name="firstName"
             placeholder="bill"
             ref={register({ required: true, maxLength: 3 })}
+            aria-label="firstName-input"
+            onChange={(e)=>{onlabelchange(e)}}
+            value={stuff}
           />
           {errors.firstName && (
             <p>Looks like there was an error: {errors.firstName.type}</p>
